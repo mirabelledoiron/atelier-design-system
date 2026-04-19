@@ -5,6 +5,7 @@ import {
   useContext,
   useEffect,
   useId,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -22,6 +23,10 @@ type DialogContextValue = {
   titleId: string;
   descriptionId: string;
   triggerRef: React.MutableRefObject<HTMLElement | null>;
+  hasTitle: boolean;
+  setHasTitle: (v: boolean) => void;
+  hasDescription: boolean;
+  setHasDescription: (v: boolean) => void;
 };
 
 const DialogContext = createContext<DialogContextValue | null>(null);
@@ -58,7 +63,10 @@ export function AtelierDialog({
   const autoId = useId();
   const titleId = `atelier-dialog-title-${autoId}`;
   const descriptionId = `atelier-dialog-desc-${autoId}`;
-  const triggerRef = { current: null as HTMLElement | null };
+  const triggerRef = useRef<HTMLElement | null>(null);
+
+  const [hasTitle, setHasTitle] = useState(false);
+  const [hasDescription, setHasDescription] = useState(false);
 
   const handleOpenChange = useCallback(
     (next: boolean) => {
@@ -72,7 +80,17 @@ export function AtelierDialog({
 
   return (
     <DialogContext.Provider
-      value={{ open, onOpenChange: handleOpenChange, titleId, descriptionId, triggerRef }}
+      value={{
+        open,
+        onOpenChange: handleOpenChange,
+        titleId,
+        descriptionId,
+        triggerRef,
+        hasTitle,
+        setHasTitle,
+        hasDescription,
+        setHasDescription,
+      }}
     >
       {children}
     </DialogContext.Provider>
@@ -130,7 +148,15 @@ export const AtelierDialogContent = forwardRef<
   HTMLDivElement,
   AtelierDialogContentProps
 >(({ children, className }, _ref) => {
-  const { open, onOpenChange, titleId, descriptionId, triggerRef } = useDialogContext();
+  const {
+    open,
+    onOpenChange,
+    titleId,
+    descriptionId,
+    triggerRef,
+    hasTitle,
+    hasDescription,
+  } = useDialogContext();
 
   const focusTrapRef = useFocusTrap<HTMLDivElement>({
     enabled: open,
@@ -188,8 +214,8 @@ export const AtelierDialogContent = forwardRef<
         ref={focusTrapRef}
         role="dialog"
         aria-modal="true"
-        aria-labelledby={titleId}
-        aria-describedby={descriptionId}
+        aria-labelledby={hasTitle ? titleId : undefined}
+        aria-describedby={hasDescription ? descriptionId : undefined}
         tabIndex={-1}
         className={cn(dialogStyles.panel, className)}
       >
@@ -256,7 +282,13 @@ export const AtelierDialogTitle = forwardRef<
   HTMLHeadingElement,
   { className?: string; children: ReactNode }
 >(({ className, children }, ref) => {
-  const { titleId } = useDialogContext();
+  const { titleId, setHasTitle } = useDialogContext();
+
+  useEffect(() => {
+    setHasTitle(true);
+    return () => setHasTitle(false);
+  }, [setHasTitle]);
+
   return (
     <h2 ref={ref} id={titleId} className={cn(dialogStyles.title, className)}>
       {children}
@@ -270,7 +302,13 @@ export const AtelierDialogDescription = forwardRef<
   HTMLParagraphElement,
   { className?: string; children: ReactNode }
 >(({ className, children }, ref) => {
-  const { descriptionId } = useDialogContext();
+  const { descriptionId, setHasDescription } = useDialogContext();
+
+  useEffect(() => {
+    setHasDescription(true);
+    return () => setHasDescription(false);
+  }, [setHasDescription]);
+
   return (
     <p ref={ref} id={descriptionId} className={cn(dialogStyles.description, className)}>
       {children}
