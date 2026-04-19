@@ -1,12 +1,12 @@
 # Atelier Primitives
 
-A hand-rolled, minimal-dependency React component library built to demonstrate senior-level design system engineering. Every primitive is built from scratch — no Radix, no Headless UI, no Tailwind. Just React, TypeScript, CSS Modules, `clsx`, and a Style Dictionary token pipeline.
+A hand-rolled, minimal-dependency React component library. Every primitive is built from scratch — no Radix, no Headless UI, no Tailwind. Just React, TypeScript, CSS Modules, `clsx`, and a Style Dictionary token pipeline.
 
-## Why this exists
+## About
 
-Most modern design systems wrap [Radix Primitives](https://www.radix-ui.com/) and call it a day. That's a fine *consumer* skillset. This library demonstrates the *author* skillset: building accessible behavior primitives from the WAI-ARIA Authoring Practices, with focus management, keyboard handling, and ARIA relationships hand-implemented and tested.
+I'm Mirabelle Doiron, a Design Engineer. I built Atelier Primitives to work through accessible behavior primitives directly from the WAI-ARIA Authoring Practices — focus management, keyboard handling, and ARIA relationships, hand-implemented and tested.
 
-See [`ai.md`](./documentations/ai.md) for how AI was used vs. what was authored manually.
+See [`ai.md`](./documentations/ai.md) for how I used AI versus what I wrote by hand.
 
 ## What's inside
 
