@@ -27,3 +27,6 @@ storybook-static/
 
 # Vite
 *.local
+
+# TypeScript incremental build info
+*.tsbuildinfo
