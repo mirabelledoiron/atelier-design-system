@@ -1,6 +1,6 @@
 # Atelier Primitives
 
-A hand-rolled, zero-dependency React component library built to demonstrate senior-level design system engineering. Every primitive is built from scratch — no Radix, no Headless UI, no Tailwind. Just React, TypeScript, CSS Modules, and a Style Dictionary token pipeline.
+A hand-rolled, minimal-dependency React component library built to demonstrate senior-level design system engineering. Every primitive is built from scratch — no Radix, no Headless UI, no Tailwind. Just React, TypeScript, CSS Modules, `clsx`, and a Style Dictionary token pipeline.
 
 ## Why this exists
 
@@ -10,12 +10,16 @@ See [`ai.md`](./documentations/ai.md) for how AI was used vs. what was authored 
 
 ## What's inside
 
-### Primitives (4 shipped)
+### Primitives (8 shipped)
 
 - **AtelierButton** — polymorphic `as` prop, 6 variants, 4 sizes, loading state, icon slots
 - **AtelierSwitch** — `role="switch"`, `aria-checked`, Space/Enter, controlled/uncontrolled, hidden form input
 - **AtelierAccordion** — compound components via Context, single/multiple mode, ArrowUp/Down/Home/End keyboard nav, CSS grid animated height
 - **AtelierDialog** — focus trap, `inert` on siblings, scroll lock, portal, Escape, overlay click, return focus
+- **AtelierTabs** — compound components, roving tabindex, horizontal/vertical orientation, controlled/uncontrolled, Arrow/Home/End keyboard nav
+- **AtelierTextField** — compound Label/Input/Description/Error, `aria-describedby` + `aria-invalid` + `aria-errormessage` wiring, 3 sizes
+- **AtelierSelect** — listbox pattern via portal, typeahead, highlighted index, Arrow/Home/End/Esc keyboard nav, controlled/uncontrolled
+- **AtelierCheckbox** — tri-state (`aria-checked="mixed"`), controlled/uncontrolled, hidden native input for form submission
 
 ### Hooks
 
@@ -31,6 +35,8 @@ See [`ai.md`](./documentations/ai.md) for how AI was used vs. what was authored 
 - **Hex colors** throughout (intentional choice over HSL — see [`decisions.md`](./documentations/decisions.md))
 
 ## Install
+
+> Not yet published to npm. Clone the repo and run `npm install` locally. The published API below is what the package will expose once `"private": true` is flipped in `package.json`.
 
 ```bash
 npm install atelier-design-system
@@ -70,18 +76,20 @@ Set the brand and theme on a wrapping element:
 - React 18 + TypeScript
 - Style Dictionary v4 (token pipeline)
 - CSS Modules (no Tailwind — see [`decisions.md`](./documentations/decisions.md))
-- `clsx` (only non-React runtime dependency)
-- Vite (dev + library build)
+- `clsx` (className composition)
+- Vite (library build)
 - Storybook 8 (component workshop)
-- Vitest + Testing Library + vitest-axe (50 tests)
-- Next.js 15 docs site in [`docs/`](./docs)
+- Vitest + Testing Library + vitest-axe (122 tests)
+- Next.js 15 docs site in [`app/`](./app)
 
 ## Scripts
 
 ```bash
 npm run tokens          # rebuild CSS variables from token JSON
-npm run dev             # Storybook on :6006
-npm run build           # tokens + tsc + Vite library build
+npm run dev             # Next.js docs site on :3000
+npm run dev:storybook   # Storybook on :6006
+npm run build           # tokens + Next.js docs site build
+npm run build:lib       # tokens + tsc + Vite library build
 npm run build-storybook # static Storybook for hosting
 npm run test            # Vitest with vitest-axe
 npm run lint            # ESLint
@@ -99,7 +107,7 @@ Every primitive ships with:
 
 ## Documentation
 
-- [`roadmap.md`](./documentations/roadmap.md) — planned primitives (TextField, Checkbox, RadioGroup, Tabs, Tooltip, Toast, Combobox)
+- [`roadmap.md`](./documentations/roadmap.md) — planned primitives (RadioGroup, Tooltip, Toast, Combobox)
 - [`architecture.md`](./documentations/architecture.md) — system layers, drift prevention, multi-brand strategy
 - [`decisions.md`](./documentations/decisions.md) — API design decisions with rationale
 - [`ai.md`](./documentations/ai.md) — how AI was used, what was manual, impact
